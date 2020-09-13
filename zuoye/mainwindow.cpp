@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include<QMessageBox>
+#include <QPixmap>
+#include <QPaintEvent>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -8,15 +10,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     resize(840, 840);//构建一个大小为840的窗口
 
-    memset(a, 0, 20 * 20 * sizeof(int));//分配内存
+       memset(a, 0, 20 * 20 * sizeof(int));//分配内存
 
-    player = 0;
+       player = 0;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 void MainWindow::paintEvent(QPaintEvent *)//绘图函数
 
 {
@@ -36,6 +39,9 @@ void MainWindow::paintEvent(QPaintEvent *)//绘图函数
         p.drawLine(20 + i * 40, 20, 20 + i * 40, 820);//竖线
 
     }
+
+
+
     QBrush brush;
 
     brush.setStyle(Qt::SolidPattern);//用笔刷画圆作为子
@@ -75,7 +81,10 @@ void MainWindow::paintEvent(QPaintEvent *)//绘图函数
         }
 
     }
+
 }
+
+
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
@@ -99,8 +108,174 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         }
 
+        if(isWin(x, y))
+
+        {
+
+            update();
+
+            setEnabled(false);
+
+            QMessageBox::information(this, "Win", "Win", QMessageBox::Ok);
+
+        }
+
     }
 
     update();
+
+}
+
+
+
+int MainWindow::isWin(int x, int y)
+
+{
+
+     return f1(x, y) || f2(x, y) || f3(x, y) || f4(x ,y);
+
+}
+
+
+
+int MainWindow::f1(int x, int y)//判断横线
+
+{
+
+    int i;
+
+    for (i = 0; i < 6; i++)
+
+    {
+
+        if(y - i >= 0 &&
+
+           y + 5 - i <= 0xF &&
+
+           a[x][y - i] == a[x][y + 1 - i] &&
+
+           a[x][y - i] == a[x][y + 2 - i] &&
+
+           a[x][y - i] == a[x][y + 3 - i] &&
+
+           a[x][y - i] == a[x][y + 4 - i] &&
+
+           a[x][y - i] == a[x][y + 5 - i])
+
+        return 1;
+
+    }
+
+    return 0;
+
+}
+
+
+
+int MainWindow::f2(int x, int y)//判断竖线
+
+{
+
+    int i;
+
+    for (i = 0; i < 6; i++)
+
+    {
+
+        if(x - i >= 0 &&
+
+           x + 5 - i <= 0xF &&
+
+           a[x - i][y] == a[x + 1 - i][y] &&
+
+           a[x - i][y] == a[x + 2 - i][y] &&
+
+           a[x - i][y] == a[x + 3 - i][y] &&
+
+           a[x - i][y] == a[x + 4 - i][y] &&
+
+           a[x - i][y] == a[x + 5 - i][y])
+
+           return 1;
+
+    }
+
+    return 0;
+
+}
+
+
+
+int MainWindow::f3(int x, int y)//x负方向判断斜线
+
+{
+
+    int i;
+
+    for (i = 0; i < 6; i++)
+
+    {
+
+        if(x - i >= 0 &&
+
+           y - i >= 0 &&
+
+           x + 5 - i <= 0xF &&
+
+           y + 5 - i <= 0xF &&
+
+           a[x - i][y - i] == a[x + 1 - i][y + 1 - i] &&
+
+           a[x - i][y - i] == a[x + 2 - i][y + 2 - i] &&
+
+           a[x - i][y - i] == a[x + 3 - i][y + 3 - i] &&
+
+           a[x - i][y - i] == a[x + 4 - i][y + 4 - i] &&
+
+           a[x - i][y - i] == a[x + 5 - i][y + 5 - i])
+
+           return 1;
+
+    }
+
+    return 0;
+
+}
+
+
+
+int MainWindow::f4(int x, int y)//x正方向判断斜线
+
+{
+
+    int i;
+
+    for (i = 0; i < 6; i++)
+
+    {
+
+        if(x + i <= 0xF &&
+
+           y - i >= 0 &&
+
+           x - 5 + i >= 0 &&
+
+           y + 5 - i <= 0xF &&
+
+           a[x + i][y - i] == a[x - 1 + i][y + 1 - i] &&
+
+           a[x + i][y - i] == a[x - 2 + i][y + 2 - i] &&
+
+           a[x + i][y - i] == a[x - 3 + i][y + 3 - i] &&
+
+           a[x + i][y - i] == a[x - 4 + i][y + 4 - i] &&
+
+           a[x + i][y - i] == a[x - 5 + i][y + 5 - i])
+
+           return 1;
+
+    }
+
+    return 0;
 
 }
