@@ -16,6 +16,8 @@ public:
     ~MainWindow();
     void paintEvent(QPaintEvent *);//用于绘图
 
+    void mouseReleaseEvent(QMouseEvent *);//用于检测鼠标的信号
+
 private:
     Ui::MainWindow *ui;
     int a[20][20];//棋盘数组
