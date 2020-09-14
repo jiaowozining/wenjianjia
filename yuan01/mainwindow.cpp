@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->setWindowTitle("游戏界面");
     resize(880, 880);//构建一个大小为880的窗口
 
        memset(a, 0, 20 * 20 * sizeof(int));//分配内存
@@ -120,14 +122,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
             if(player==400)
 
-                QMessageBox::information(this, "board games", "board games", QMessageBox::Ok);
+                QMessageBox::information(this, "result", "board games", QMessageBox::Ok);//棋盘四百格，若下满则和棋
 
             if(player%2)
 
-                QMessageBox::information(this, "Black Win", "Black Win", QMessageBox::Ok);
+                QMessageBox::information(this, "result", "Black Win", QMessageBox::Ok);//下棋者轮到白子但游戏已结束则黑子胜利
 
             else
-                QMessageBox::information(this, "White Win", "White Win", QMessageBox::Ok);
+                QMessageBox::information(this, "result", "White Win", QMessageBox::Ok);//下棋者轮到黑子但游戏已结束则白子胜利
 
 
         }
@@ -140,7 +142,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
 
 
-int MainWindow::isWin(int x, int y)
+int MainWindow::isWin(int x, int y)//判断是否胜利
 
 {
 
@@ -150,7 +152,7 @@ int MainWindow::isWin(int x, int y)
 
 
 
-int MainWindow::f1(int x, int y)//判断横线
+int MainWindow::f1(int x, int y)//判断横线是否连成六子
 
 {
 
@@ -184,7 +186,7 @@ int MainWindow::f1(int x, int y)//判断横线
 
 
 
-int MainWindow::f2(int x, int y)//判断竖线
+int MainWindow::f2(int x, int y)//判断竖线是否连成六子
 
 {
 
@@ -218,7 +220,7 @@ int MainWindow::f2(int x, int y)//判断竖线
 
 
 
-int MainWindow::f3(int x, int y)//x负方向判断斜线
+int MainWindow::f3(int x, int y)//x负方向判断斜线是否连成六子
 
 {
 
@@ -256,7 +258,7 @@ int MainWindow::f3(int x, int y)//x负方向判断斜线
 
 
 
-int MainWindow::f4(int x, int y)//x正方向判断斜线
+int MainWindow::f4(int x, int y)//x正方向判断斜线是否连成六子
 
 {
 
