@@ -13,8 +13,6 @@ public:
 
     void changewin();//窗口显示调换函数
 
-    void dealsub();//处理信号函数
-
     void paintEvent(QPaintEvent *);//用于绘图
 
 signals:
@@ -23,7 +21,7 @@ public slots:
 
 private:
         QPushButton b;
-       MainWindow w;
+        MainWindow w;
 
 };
 

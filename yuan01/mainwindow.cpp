@@ -10,11 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("游戏界面");
+
     resize(880, 880);//构建一个大小为880的窗口
 
-       memset(a, 0, 20 * 20 * sizeof(int));//分配内存
+    memset(a, 0, 20 * 20 * sizeof(int));//分配内存
 
-       player = 0;
+    player = 0;
 }
 
 MainWindow::~MainWindow()
@@ -120,9 +121,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
             setEnabled(false);//下过子的地方无法再次下子，不能被更改
 
-            if(player==400)
 
-                QMessageBox::information(this, "result", "board games", QMessageBox::Ok);//棋盘四百格，若下满则和棋
 
             if(player%2)
 
@@ -133,6 +132,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
 
         }
+        else  if(player==400)
+
+            QMessageBox::information(this, "result", "board games", QMessageBox::Ok);//棋盘四百格，若下满则和棋
 
     }
 
