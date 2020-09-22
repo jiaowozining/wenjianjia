@@ -5,6 +5,7 @@
 #include <QPainter>
 #include "mypushbutton.h"
 #include "mycoin.h"
+#include "dataconfig.h"
 #include <QTimer>
 #include <QLabel>
 #include <QSound>
@@ -188,17 +189,18 @@ PlayScene::PlayScene(int levelNum)
                         }
                     }
 
-                  //判断是否胜利
-                    if(this->isWin==true)
-                   {
-                       qDebug()<<"游戏胜利";
-                        for(int i=0;i<4;i++)
-                       {
-                           for(int j=0;j<4;j++)
-                                coinBtn[i][j]->isWin=true;
-                            }
-                       }
-                   }
+//                    //判断是否胜利
+//                    if(this->isWin==true)
+//                    {
+//                        qDebug()<<"游戏胜利";
+//                        for(int i=0;i<4;i++)
+//                        {
+//                            for(int j=0;j<4;j++)
+//                            {
+//                                coinBtn[i][j]->isWin=true;
+//                            }
+//                        }
+//                    }
                     checkWin();
                 });
 
@@ -207,3 +209,95 @@ PlayScene::PlayScene(int levelNum)
     }
 
 }
+
+void PlayScene::paintEvent(QPaintEvent *)
+{
+    //创建背景
+    QPainter painter(this);
+    QPixmap pix;
+    pix.load("://image/2.png");
+    painter.drawPixmap(0,0,this->width(),this->height(),pix);
+
+    //加载标题
+    pix.load("://image/coinflip.png");
+    pix = pix.scaled(pix.width()*0.1,pix.height()*0.1);
+    painter.drawPixmap(110,90,pix);
+
+}
+
+void PlayScene::recoin()
+{
+    dataConfig data;
+    for(int i = 0; i < 4;i++)
+    {
+        for(int j = 0; j <4;j++)
+        {
+            this->gameArray[i][j] = data.mData[this->levelIndex][i][j];
+        }
+        //qDebug()<<"";
+    }
+}
+
+
+
+void  PlayScene::checkWin()
+{
+    for(int i = 0 ; i < 4;i++)
+    {
+        for(int j = 0 ; j < 4; j++)
+        {
+            //qDebug() << coinBtn[i][j]->flag ;
+            if( coinBtn[i][j]->flag == false)
+            {
+                this->isWin = false;
+                break;
+            }
+        }
+    }
+    if(this->isWin)
+    {
+        QSound *winSound = new QSound(":/image/successSound.wav",this);
+        winSound->play();
+
+        QLabel * winLabel = new QLabel;
+        QPixmap tmpPix;
+        tmpPix.load(":/image/success.png");
+        tmpPix=tmpPix.scaled(tmpPix.width()*0.2,tmpPix.height()*0.2);
+        winLabel->setGeometry(0,0,tmpPix.width(),tmpPix.height());
+        winLabel->setPixmap(tmpPix);
+        winLabel->setParent(this);
+        winLabel->show();
+        winLabel->move( (this->width() - tmpPix.width())*0.5 , -tmpPix.height());
+
+        //显示胜利图
+        QPropertyAnimation * animation1 =  new QPropertyAnimation(winLabel,"geometry");
+        animation1->setDuration(1000);
+        animation1->setStartValue(QRect(winLabel->x(),winLabel->y(),winLabel->width(),winLabel->height()));
+        animation1->setEndValue(QRect(winLabel->x(),winLabel->y()+114,winLabel->width(),winLabel->height()));
+        animation1->setEasingCurve(QEasingCurve::OutBounce);
+        animation1->start();
+
+        //前十九关延时自动进入到下一关游戏场景
+        if(levelIndex<20)
+        {
+            QTimer::singleShot(3000,this,[=]()
+            {
+                this->hide(); //将当前场景隐藏掉
+
+                play = new PlayScene(this->levelIndex+1); //创建游戏场景
+                play->setGeometry(this->geometry());
+                play->show();//显示游戏场景
+
+                //返回按钮返回关卡选择
+                connect(play,&PlayScene::chooseSceneBack,[=](){
+                    this->setGeometry(play->geometry());
+                    this->chooseSceneBack();
+                    delete play;
+                    play = NULL;
+                    //qDebug("1Back Test from playscene") ;
+                });
+            });
+        }
+    }
+}
+

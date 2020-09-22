@@ -19,6 +19,18 @@ MainScene::MainScene(QWidget *parent) :
     //设置窗口图标
     setWindowIcon(QIcon(":/image/coin1.png"));
 
+    //创建一个选择关卡界面
+    chooseScene=new ChooseLevelScene;
+
+    //接受chooseSCene的返回信号
+    connect(chooseScene,&ChooseLevelScene::chooseSceneBack,this,[=]()
+    {
+        //关闭选择关卡的场景
+        chooseScene->close();
+        //重新显示主窗口
+        this->show();
+
+    });
 
     //点击退出按钮
     connect(ui->actionback,&QAction::triggered,this,[=]()
@@ -41,7 +53,20 @@ MainScene::MainScene(QWidget *parent) :
         btnStart->jumpdow();
         btnStart->jumpup();
 
+//        //跳出选择关卡界面
+//        chooseScene->show();
+//        //隐藏开始游戏的界面
+//        this->hide();
 
+        //延时进入关卡选择界面，否则弹起特效无法显示
+        QTimer::singleShot(600,this,[=]()
+        {
+            //隐藏开始游戏的界面
+            this->hide();
+            //跳出选择关卡界面
+            chooseScene->show();
+
+        });
     });
 }
 

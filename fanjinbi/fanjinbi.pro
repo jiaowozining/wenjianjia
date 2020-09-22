@@ -28,15 +28,19 @@ SOURCES += \
         mainscene.cpp \
     mypushbutton.cpp \
     chooselevelscene.cpp \
-    playscene.cpp
+    dataconfig.cpp \
+    guize.cpp \
+    playscene.cpp \
+    mycoin.cpp
 
 HEADERS += \
         mainscene.h \
     mypushbutton.h \
     chooselevelscene.h \
+    dataconfig.h \
+    guize.h \
     playscene.h \
-    mycoin.h \
-    guize.h
+    mycoin.h
 
 FORMS += \
         mainscene.ui

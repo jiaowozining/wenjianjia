@@ -27,10 +27,10 @@ public:
     //向下弹跳
     void jumpdow();
 
-  /*  //鼠标按下和释放事件，主要用于返回按钮的使用
+    //鼠标按下和释放事件，主要用于返回按钮的使用
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-**/
+
 signals:
 
 public slots:

@@ -1,6 +1,5 @@
 #ifndef GUIZE_H
 #define GUIZE_H
-
 #include <QWidget>
 class guize : public QWidget
 {
@@ -19,5 +18,4 @@ private:
 
 
 };
-
 #endif // GUIZE_H

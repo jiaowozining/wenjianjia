@@ -35,7 +35,7 @@ MyPushButton::MyPushButton(QString zc,QString anxia)
     this->setIconSize(QSize(q.width(),q.height()));
 }
 
-  //先设置向下弹跳
+  //先设置向上弹跳
 void MyPushButton::jumpdow(){
 
     //创建动态对象
@@ -77,3 +77,75 @@ void MyPushButton::jumpup(){
     action->start();
 }
 
+//鼠标按下按钮
+void MyPushButton::mousePressEvent(QMouseEvent *event)
+{
+    if(this->anxial != "") //传入的按下图片不为空 说明需要有按下状态，切换图片
+    {
+        QPixmap q1;
+        bool r1 = q1.load(this->anxial);
+        if(!r1)
+        {
+           qDebug() << "图片加载失败";
+           return;
+           /*打印出出错的位置
+            * QString str=QString ("%1 图片加载失败").arg(this->normalImg);
+            * qDebug()<<str;
+            * return;
+            * */
+        }
+
+        //设置图片固定大小
+        this->setFixedSize( q1.width(),q1.height());
+
+        //设置不规则图片样式
+        this->setStyleSheet("QPushButton{border:0px;}");
+
+        //设置不规则透明贴图，否则图片会带有小框
+        this->setIcon(q1);
+
+        //设置图标大小
+        this->setIconSize(QSize(q1.width(),q1.height()));
+
+    }
+
+    //让父类执行其他内容
+    return QPushButton::mousePressEvent(event);
+
+}
+
+void MyPushButton::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(this->anxial != "") //传入的按下图片不为空 说明需要有按下状态，切换成初始图片
+    {
+        QPixmap q1;
+        bool e1 = q1.load(this->zcl);
+        if(!e1)
+        {
+           qDebug() << "图片加载失败";
+           return;
+           /*打印出出错的位置
+            * QString str=QString ("%1 图片加载失败").arg(this->normalImg);
+            * qDebug()<<str;
+            * return;
+            * */
+        }
+
+        //设置图片固定大小
+        this->setFixedSize( q1.width(),q1.height());
+
+        //设置不规则透明贴图，否则图片会带有小框
+        this->setStyleSheet("QPushButton{border:0px;}");
+
+        //设置图标
+        this->setIcon(q1);
+
+        //设置图标大小
+        this->setIconSize(QSize(q1.width(),q1.height()));
+
+    }
+
+    //让父类执行其他内容
+    return QPushButton::mouseReleaseEvent(event);
+
+}

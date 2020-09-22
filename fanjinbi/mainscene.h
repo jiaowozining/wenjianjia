@@ -2,7 +2,7 @@
 #define MAINSCENE_H
 
 #include <QMainWindow>
-
+#include <chooselevelscene.h>
 
 namespace Ui {
 class MainScene;
@@ -16,7 +16,7 @@ public:
     explicit MainScene(QWidget *parent = 0);
     ~MainScene();
     void paintEvent(QPaintEvent *);
-
+    ChooseLevelScene * chooseScene=NULL;
 
 private:
     Ui::MainScene *ui;
